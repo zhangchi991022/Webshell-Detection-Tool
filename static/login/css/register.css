@@ -1,0 +1,25 @@
+body {
+    height: 100%;
+    background-image: url('../image/bg.jpg');
+    background-size: cover;
+}
+
+.form-register {
+
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-register{
+    margin-top:115px;
+    font-weight: 400;
+}
+.form-group {
+    margin-bottom: 5px;
+}
+form a{
+    display: inline-block;
+    margin-top:25px;
+    line-height: 10px;
+}

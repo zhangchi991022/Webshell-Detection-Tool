@@ -1,0 +1,297 @@
+
+{% load static %}
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>主页</title>
+
+
+
+    <!-- Google Font: Source Sans Pro -->
+
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{% static 'AdminLTE-3.1.0/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'AdminLTE-3.1.0/dist/css/adminlte.min.css' %}">
+
+
+
+    <link href="{% static 'fileinput/css/fileinput.min.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
+
+
+
+
+
+
+</head>
+<style>
+
+
+
+</style>
+
+<body class="hold-transition sidebar-mini">
+
+
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu"  role="button"><i class="fas fa-bars"></i></a>
+            </li>
+
+
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/logout/" class="nav-link">注销</a>
+            </li>
+        </ul>
+
+
+
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a  class="brand-link">
+            <img src="{% static 'AdminLTE-3.1.0/dist/img/themeIcon.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">WEBSHELL检测</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="{% static 'AdminLTE-3.1.0/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a class="d-block">{{request.session.user_name}}</a>
+                </div>
+            </div>
+
+
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item menu-open">
+                        <a  class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                主要功能
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/detection/" class="nav-link active">
+                                    <i class="nav-icon fas fa-search"></i>
+                                    <p>文件检测</p>
+
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/monitor/" class="nav-link">
+                                    <i class="nav-icon fas fa-file"></i>
+                                    <p>目录监控</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">文件检测</h1>
+                    </div><!-- /.col -->
+                    <!--显示上传信息-->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/index/">主页</a></li>
+                            <li class="breadcrumb-item active">Main Page</li>
+                        </ol>
+                    </div><!-- /.col -->
+
+                </div><!-- /.row -->
+
+            </div><!-- /.container-fluid -->
+        </div>
+
+        <!-- /.content-header -->
+        <form action="" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+
+            <input id="f_upload" type="file" class="file-loading" name="myfile" />
+            <div class="card-body pad table-responsive">
+
+
+
+                <button  data-style="expand-left" type="submit" class=" loading btn btn-block btn-primary btn-lg"    >
+
+                    检测
+
+
+                </button>
+
+            </div>
+
+        </form>
+
+
+
+
+
+        <div class="card-body">
+            {% if message == 'Webshell Discovered!' %}
+
+
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5><i class="icon fas fa-ban"></i> Alert!</h5>
+                    <p>
+
+                    </p>
+                    {{ message}}
+                </div>
+
+            {% elif message == 'Not Webshell!' %}
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <h5><i class="icon fas fa-check"></i> Congratulations!</h5>
+
+                    {{ message}}
+                </div>
+            {% endif %}
+        </div>
+
+
+
+
+
+                <!-- /.card-header -->
+
+                <!-- /.card-body -->
+
+            <!-- /.card -->
+
+        <!-- /.col -->
+
+
+        <!-- /.content -->
+    </div>
+
+    <!-- /.content-wrapper -->
+
+
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+
+
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2021 <a href="https://github.com/zhangchi991022">my github</a>.</strong> All rights reserved.
+    </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+
+
+<script src="{% static 'jquery-3.5.1/jquery-3.5.1.min.js' %}"></script>
+
+
+<!-- Bootstrap 4 -->
+
+<!-- AdminLTE App -->
+<script src="{% static 'AdminLTE-3.1.0/dist/js/adminlte.min.js' %}"></script>
+<script src="{% static 'fileinput/js/fileinput.min.js' %}"></script>
+<script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'fileinput/js/locales/zh.js' %}"></script>
+<script src="{% static 'loading/js/coco-message.js' %}"></script>
+
+
+
+</body>
+<script  >
+
+
+
+    $("#f_upload").fileinput({
+        language: 'zh',
+        allowedFileExtensions : ['php', 'zip'],
+
+        maxFilesNum: 1,
+        uploadAsync: false,
+        showPreview:true,
+        textEncoding:'UTF-8',
+        showUpload : false,
+
+
+
+        dropZoneTitle:"可以拖拽文件到这里（仅支持单个PHP文件或者ZIP压缩包）",
+        showCaption:true,
+        layoutTemplates :{
+            actionDelete:'', //去除上传预览的缩略图中的删除图标
+            actionUpload:'',//去除上传预览缩略图中的上传图片；
+            actionZoom:''   //去除上传预览缩略图中的查看详情预览的缩略图标。
+        },
+
+
+    });
+    "use strict";
+    cocoMessage.config({
+        duration: 10000,
+    });
+    $(function () {
+        $('.loading ').click(function () {
+            var closeMsg = cocoMessage.loading(true);
+            setTimeout(function () {
+                closeMsg();
+            }, 400000);
+        })
+    })
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,333 @@
+
+{% load static %}
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>主页</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="{% static 'AdminLTE-3.1.0/plugins/fontawesome-free/css/all.min.css' %}">
+    <!-- Theme style -->
+
+    <link rel="stylesheet" href="{% static 'AdminLTE-3.1.0/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'AdminLTE-3.1.0/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'AdminLTE-3.1.0/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'AdminLTE-3.1.0/dist/css/adminlte.min.css' %}">
+
+
+
+
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav ">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu"  role="button"><i class="fas fa-bars"></i></a>
+            </li>
+
+
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="/logout/" class="nav-link">注销</a>
+            </li>
+        </ul>
+
+
+
+    </nav>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a  class="brand-link">
+            <img src="{% static 'AdminLTE-3.1.0/dist/img/themeIcon.jpg' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <span class="brand-text font-weight-light">WEBSHELL检测</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="{% static 'AdminLTE-3.1.0/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a class="d-block">{{request.session.user_name}}</a>
+                </div>
+            </div>
+
+
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item menu-open">
+                        <a  class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                主要功能
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/detection/" class="nav-link ">
+                                    <i class="nav-icon fas fa-search"></i>
+                                    <p>文件检测</p>
+
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/monitor/" class="nav-link active">
+                                    <i class="nav-icon fas fa-file"></i>
+                                    <p>目录监控</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">目录监控</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/index/">主页</a></li>
+                            <li class="breadcrumb-item active">Main Page</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title">监控记录扇形图</h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+
+
+                <!-- /.row -->
+                <div class="card"  id="monitorcard">
+
+                    <!-- /.card-header -->
+                    <div class="card-body">
+
+                            <table id="monitor" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>监测时间</th>
+                                    <th>文件路径</th>
+                                    <th>类型</th>
+                                    <th>OP</th>
+
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for i in result %}
+                                    <tr>
+
+                                        <td >{{i.m_time}}</td>
+
+
+                                        <td >{{i.path}}</td>
+                                        <td >{{i.f_type}}</td>
+                                        <td>
+                                            <button type="submit"  class="delete btn btn-block btn-outline-danger btn-sm">删除</button>
+                                        </td>
+
+
+                                    </tr>
+                                {% endfor %}
+
+
+
+
+
+
+
+
+
+                                </tbody>
+
+
+
+                            </table>
+
+
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+
+            </div><!-- /.container-fluid -->
+        </section>
+
+
+        <!-- Main content -->
+
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+    <!-- Main Footer -->
+    <footer class="main-footer">
+
+
+        <!-- Default to the left -->
+        <strong>Copyright &copy; 2021 <a href="https://github.com/zhangchi991022">my github</a>.</strong> All rights reserved.
+    </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="{% static 'AdminLTE-3.1.0/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'AdminLTE-3.1.0/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'AdminLTE-3.1.0/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'AdminLTE-3.1.0/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-3.1.0/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'AdminLTE-3.1.0/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+
+<script src="{% static 'AdminLTE-3.1.0/plugins/chart.js/Chart.min.js' %}"></script>
+
+
+
+<!-- AdminLTE App -->
+<script src="{% static 'AdminLTE-3.1.0/plugins/jquery-validation/jquery.validate.min.js' %}"></script>
+<script src="{% static 'AdminLTE-3.1.0/plugins/jquery-validation/additional-methods.min.js' %}"></script>
+<script src="{% static 'AdminLTE-3.1.0/dist/js/demo.js' %}"></script>
+<script src="{% static 'AdminLTE-3.1.0/dist/js/adminlte.min.js' %}"></script>
+
+<script>
+    $('#monitor').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true,
+        "responsive": true,
+    });
+
+    $(function(){
+        $('.delete').click(function(){
+            //$(this).closest('tr').remove();
+            var row = parseInt($(this).parent().parent().index(0)+1);
+            var data=$("#monitor tr:eq("+row+") td:nth-child(2)").text();
+            $(this).closest('tr').remove();
+            //alert(data)
+
+            $.ajax({
+                url: '/monitor/',
+                type: 'POST',
+                headers: {
+                    // 要加 csrf 的请求头，如下
+                    "X-CSRFToken": '{{ csrf_token }}',
+                    // 要改请求头，以 json 格式发送信息
+                    'Content-Type': 'application/json',
+                },
+
+                data:JSON.stringify({'path':data}),
+
+
+                success:function (res) {
+                    if (res){
+                        alert("删除成功！")
+                    }
+
+                }
+
+            })
+
+
+
+        })
+    })
+
+    $(function(){
+        var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+        var blackCount= parseInt({{blackCount}})
+        var whiteCount= parseInt({{whiteCount}})
+        //alert({{ blackCount }})
+        var pieData        = {
+            labels: [
+                'Webshell',
+
+                'Normal',
+
+            ],
+            datasets: [
+                {
+                    data: [blackCount,whiteCount],
+                    backgroundColor : ['#ff3333', '#66ff33'],
+                }
+            ]
+        }
+        var pieOptions     = {
+            maintainAspectRatio : false,
+            responsive : true,
+        }
+
+        var pieChart = new Chart(pieChartCanvas, {
+            type: 'pie',
+            data: pieData,
+            options: pieOptions
+        })
+    })
+
+
+
+
+</script>
+</body>
+</html>

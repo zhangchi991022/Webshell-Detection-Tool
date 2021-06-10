@@ -1,0 +1,71 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models
+
+# Create your models here.
+from django.utils import timezone
+from django.utils.encoding import smart_str
+
+
+class User(models.Model):
+    gender = (
+        ('male', "男"),
+        ('female', "女"),
+    )
+
+    name = models.CharField(max_length=128, unique=True)
+    password = models.CharField(max_length=256)
+    email = models.EmailField(unique=True)
+    sex = models.CharField(max_length=32, choices=gender, default="男")
+    c_time = models.DateTimeField(auto_now_add=True)
+    has_confirmed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["-c_time"]
+        verbose_name = "用户"
+        verbose_name_plural = "用户"
+
+
+class ConfirmString(models.Model):
+    code = models.CharField(max_length=256)
+    user = models.OneToOneField('User', on_delete=models.CASCADE)
+    c_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user.name + ":   " + self.code
+
+    class Meta:
+        ordering = ["-c_time"]
+        verbose_name = "确认码"
+        verbose_name_plural = "确认码"
+
+
+class UploadFile(models.Model):
+    file_path = models.FileField(upload_to='./uploads')
+    file_size = models.CharField(max_length=50, default='')
+    name = models.CharField(max_length=128, default='')
+
+    def __str__(self):
+        return smart_str('%s %s %s' % (self.name, self.file_path, self.file_size))
+
+    class Meta:
+        verbose_name = "文件"
+        verbose_name_plural = "文件"
+
+
+class MonitorFile(models.Model):
+    path = models.CharField(default='', max_length=256)
+    m_time = models.DateTimeField(default=timezone.now)
+
+    f_type = models.CharField(default='', max_length=128)
+
+    def __unicode__(self):
+        return self.path
+
+    class Meta:
+        verbose_name = "被监控文件"
+        verbose_name_plural = "被监控文件"

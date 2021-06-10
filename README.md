@@ -33,4 +33,6 @@ index：项目主目录，主要包含webshell检测算法和Django框架主要�
 python2 manage.py runserver
 
 ![image](https://github.com/zhangchi991022/Webshell-Detection-Tool/blob/main/image/test1.PNG)
+![image](https://github.com/zhangchi991022/Webshell-Detection-Tool/blob/main/image/test2.PNG)
+![image](https://github.com/zhangchi991022/Webshell-Detection-Tool/blob/main/image/test3.PNG)
 

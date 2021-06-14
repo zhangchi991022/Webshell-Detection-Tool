@@ -1,6 +1,6 @@
 # Webshell-Detection-Tool
 
-本工具采取B/S 架构，框架采用Django，基于之前的机器学习检测算法：https://github.com/zhangchi991022/webshellDetection
+本工具基于Windows，采取B/S 架构，框架采用Django，基于之前的机器学习检测算法：https://github.com/zhangchi991022/webshellDetection
 
 
 
